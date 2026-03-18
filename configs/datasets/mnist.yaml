@@ -1,0 +1,9 @@
+dataset:
+  name: mnist
+  root: data
+  partition_mode: dirichlet
+  num_clients: 10
+  dirichlet_alpha: 0.5
+  download: true
+  num_classes: 10
+

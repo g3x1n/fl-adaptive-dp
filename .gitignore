@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Test and type-check caches
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# IDE and editor files
+.vscode/
+.idea/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# # Local datasets and experiment artifacts
+data/
+outputs/*
+# !outputs/logs/
+# !outputs/logs/.gitkeep
+# !outputs/metrics/
+# !outputs/metrics/.gitkeep
+# !outputs/checkpoints/
+# !outputs/checkpoints/.gitkeep
+# !outputs/figures/
+# !outputs/figures/.gitkeep
