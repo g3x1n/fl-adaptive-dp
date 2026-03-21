@@ -1,0 +1,7 @@
+algorithm,scenario,run_name,run_dir,best_round,best_test_accuracy,best_test_loss,final_round,final_test_accuracy,final_test_loss,avg_train_loss_last5,total_upload_payload_bytes
+FedAvg,IID,exp1_opt_fedavg_mnist_iid,/Users/admin/Desktop/fl-adaptive-dp/outputs/20260321_154001_exp1_opt_fedavg_mnist_iid,20,0.944,0.178808,20,0.944,0.178808,0.171058,337313600.0
+FedProx,IID,exp1_opt_fedprox_mnist_iid,/Users/admin/Desktop/fl-adaptive-dp/outputs/20260321_154112_exp1_opt_fedprox_mnist_iid,20,0.935,0.202222,20,0.935,0.202222,0.2014872,337313600.0
+FedNova,IID,exp1_opt_fednova_mnist_iid,/Users/admin/Desktop/fl-adaptive-dp/outputs/20260321_154226_exp1_opt_fednova_mnist_iid,20,0.944,0.178533,20,0.944,0.178533,0.17108279999999998,337313600.0
+FedAvg,Non-IID,exp1_opt_fedavg_mnist_noniid,/Users/admin/Desktop/fl-adaptive-dp/outputs/20260321_154336_exp1_opt_fedavg_mnist_noniid,18,0.8795,0.379165,20,0.8465,0.46482,0.2977964,337313600.0
+FedProx,Non-IID,exp1_opt_fedprox_mnist_noniid,/Users/admin/Desktop/fl-adaptive-dp/outputs/20260321_154443_exp1_opt_fedprox_mnist_noniid,20,0.8805,0.400169,20,0.8805,0.400169,0.39310500000000004,337313600.0
+FedNova,Non-IID,exp1_opt_fednova_mnist_noniid,/Users/admin/Desktop/fl-adaptive-dp/outputs/20260321_154601_exp1_opt_fednova_mnist_noniid,17,0.896,0.330551,20,0.882,0.357623,0.1753084,337313600.0

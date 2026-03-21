@@ -1,0 +1,42 @@
+experiment:
+  name: tune_fednova_noniid_r20_lr005_f10
+  seed: 42
+  output_root: outputs
+
+dataset:
+  name: mnist
+  root: data
+  partition_mode: dirichlet
+  num_clients: 10
+  dirichlet_alpha: 0.1
+  download: false
+  num_classes: 10
+  max_train_samples: 10000
+  max_test_samples: 2000
+
+model:
+  name: mnist_cnn
+
+training:
+  algorithm: fednova
+  rounds: 20
+  # 直接复用 FedAvg/FedProx 调优后表现较好的大学习率，检查 FedNova 是否也能受益。
+  local_epochs: 1
+  batch_size: 64
+  eval_batch_size: 256
+  learning_rate: 0.05
+  fraction_fit: 1.0
+  proximal_mu: 0.0
+
+privacy:
+  dp_mode: none
+  epsilon: null
+  noise_schedule: none
+
+compression:
+  mode: none
+  topk_ratio: 1.0
+
+runtime:
+  device: auto
+  num_workers: 0
