@@ -42,11 +42,21 @@ DEFAULT_CONFIG: dict[str, Any] = {
     "privacy": {
         "dp_mode": "none",
         "epsilon": None,
+        "delta": 1e-5,
+        "clip_norm": 1.0,
+        "noise_multiplier": 0.0,
         "noise_schedule": "none",
+        "target_epsilon": None,
+        "max_noise_multiplier": 1.2,
+        "min_noise_multiplier": 0.2,
+        "schedule_metric": "update_norm",
+        "schedule_warmup_rounds": 0,
+        "accountant": "gaussian",
     },
     "compression": {
         "mode": "none",
         "topk_ratio": 1.0,
+        "compress_updates": True,
     },
     "runtime": {
         "device": "auto",

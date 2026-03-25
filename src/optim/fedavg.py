@@ -27,3 +27,23 @@ def aggregate_fedavg(
 
     return aggregated_state
 
+
+def aggregate_weighted_updates(
+    client_updates: list[OrderedDict[str, torch.Tensor]],
+    client_weights: list[int],
+) -> OrderedDict[str, torch.Tensor]:
+    """Compute the weighted average over client update tensors."""
+    if not client_updates:
+        raise ValueError("Weighted update aggregation requires at least one client update.")
+
+    total_weight = float(sum(client_weights))
+    aggregated_update: OrderedDict[str, torch.Tensor] = OrderedDict()
+
+    for key in client_updates[0].keys():
+        weighted_sum = sum(
+            update[key].float() * (weight / total_weight)
+            for update, weight in zip(client_updates, client_weights)
+        )
+        aggregated_update[key] = weighted_sum
+
+    return aggregated_update

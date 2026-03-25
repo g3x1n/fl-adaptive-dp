@@ -38,3 +38,26 @@ def aggregate_fednova(
 
     return normalized_global
 
+
+def aggregate_fednova_updates(
+    global_state: OrderedDict[str, torch.Tensor],
+    client_updates: list[OrderedDict[str, torch.Tensor]],
+    client_weights: list[int],
+    client_steps: list[int],
+) -> OrderedDict[str, torch.Tensor]:
+    """Aggregate compressed client updates using FedNova normalization."""
+    if not client_updates:
+        raise ValueError("FedNova update aggregation requires at least one client update.")
+
+    total_weight = float(sum(client_weights))
+    aggregated_update: OrderedDict[str, torch.Tensor] = OrderedDict()
+    tau_eff = sum((weight / total_weight) * steps for weight, steps in zip(client_weights, client_steps))
+
+    for key in global_state.keys():
+        normalized_direction = torch.zeros_like(global_state[key], dtype=torch.float32)
+        for update, weight, steps in zip(client_updates, client_weights, client_steps):
+            local_direction = update[key].float() / max(float(steps), 1.0)
+            normalized_direction = normalized_direction + (weight / total_weight) * local_direction
+        aggregated_update[key] = tau_eff * normalized_direction
+
+    return aggregated_update

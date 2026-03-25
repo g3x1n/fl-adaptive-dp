@@ -71,10 +71,18 @@ def main() -> None:
             "test_accuracy",
             "epsilon_spent",
             "upload_payload_bytes",
+            "pre_compression_payload_bytes",
             "selected_clients",
             "algorithm",
             "dp_mode",
             "compression_mode",
+            "noise_multiplier",
+            "clip_norm",
+            "schedule_reason",
+            "compression_ratio",
+            "nnz_params",
+            "avg_update_norm",
+            "avg_grad_norm",
         ],
     )
 
@@ -86,10 +94,18 @@ def main() -> None:
             "test_accuracy": None,
             "epsilon_spent": None,
             "upload_payload_bytes": None,
+            "pre_compression_payload_bytes": None,
             "selected_clients": config["dataset"]["num_clients"],
             "algorithm": config["training"]["algorithm"],
             "dp_mode": config["privacy"]["dp_mode"],
             "compression_mode": config["compression"]["mode"],
+            "noise_multiplier": None,
+            "clip_norm": None,
+            "schedule_reason": None,
+            "compression_ratio": None,
+            "nnz_params": None,
+            "avg_update_norm": None,
+            "avg_grad_norm": None,
         }
     )
 
