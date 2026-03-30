@@ -1,0 +1,9 @@
+inherits:
+- ../../common/runtime_ubuntu.yaml
+- ../../common/datasets/cifar10_noniid_alpha_1_0.yaml
+- ../../common/training/cifar10_strong.yaml
+- ../../common/methods/fednova.yaml
+experiment:
+  name: exp_b_alpha_sensitivity_alpha_1_0_cifar10_fednova
+  seed: 42
+  output_root: outputs/final/exp_b_alpha_sensitivity/alpha_1_0

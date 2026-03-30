@@ -1,0 +1,9 @@
+inherits:
+- ../../common/runtime_ubuntu.yaml
+- ../../common/datasets/cifar10_noniid_alpha_0_1.yaml
+- ../../common/training/cifar10_strong.yaml
+- ../../common/methods/fednova_fixed_dp.yaml
+experiment:
+  name: exp_d_privacy_tradeoff_cifar10_fednova_fixed_dp
+  seed: 42
+  output_root: outputs/final/exp_d_privacy_tradeoff

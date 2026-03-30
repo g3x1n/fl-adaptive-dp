@@ -16,7 +16,7 @@ from src.data import (
 from src.fl.client import LocalClient
 from src.fl.server import SynchronousFLServer
 from src.models import build_model
-from src.utils.device import resolve_device
+from src.utils.device import configure_runtime_backend, resolve_dataloader_kwargs, resolve_device
 
 
 def _maybe_limit_dataset(dataset, max_samples: int | None):
@@ -27,7 +27,13 @@ def _maybe_limit_dataset(dataset, max_samples: int | None):
     return Subset(dataset, list(range(capped_size)))
 
 
-def run_federated_experiment(config: dict, logger, metrics_writer) -> dict:
+def run_federated_experiment(
+    config: dict,
+    logger,
+    metrics_writer,
+    round_jsonl_writer=None,
+    client_jsonl_writer=None,
+) -> dict:
     """Build datasets, clients and model, then execute the minimal FL loop."""
     dataset_config = config["dataset"]
     runtime_config = config["runtime"]
@@ -72,20 +78,25 @@ def run_federated_experiment(config: dict, logger, metrics_writer) -> dict:
     logger.info("First client summaries: %s", client_summaries[:3])
 
     client_subsets = build_client_subsets(train_dataset, partition_map)
+    device = resolve_device(runtime_config["device"])
+    configure_runtime_backend(device, runtime_config)
+    dataloader_kwargs = resolve_dataloader_kwargs(runtime_config, device)
     client_loaders = build_client_dataloaders(
         client_subsets=client_subsets,
         batch_size=config["training"]["batch_size"],
         shuffle=True,
-        num_workers=runtime_config["num_workers"],
+        num_workers=dataloader_kwargs["num_workers"],
+        pin_memory=dataloader_kwargs["pin_memory"],
+        persistent_workers=dataloader_kwargs["persistent_workers"],
     )
     test_loader = DataLoader(
         test_dataset,
         batch_size=config["training"]["eval_batch_size"],
         shuffle=False,
-        num_workers=runtime_config["num_workers"],
+        num_workers=dataloader_kwargs["num_workers"],
+        pin_memory=dataloader_kwargs["pin_memory"],
+        persistent_workers=dataloader_kwargs["persistent_workers"],
     )
-
-    device = resolve_device(runtime_config["device"])
     global_model = build_model(
         model_name=config["model"]["name"],
         dataset_name=dataset_config["name"],
@@ -104,6 +115,8 @@ def run_federated_experiment(config: dict, logger, metrics_writer) -> dict:
         test_loader=test_loader,
         device=device,
         metrics_writer=metrics_writer,
+        round_jsonl_writer=round_jsonl_writer,
+        client_jsonl_writer=client_jsonl_writer,
         logger=logger,
         config=config,
     )

@@ -10,7 +10,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.evaluation.logger import MetricsWriter, setup_logger
+from src.evaluation.logger import JsonlWriter, MetricsWriter, default_round_metric_fieldnames, setup_logger
 from src.fl import run_federated_experiment
 from src.utils.config import flatten_config, load_config
 from src.utils.io import dump_json, dump_yaml, ensure_dir, timestamp
@@ -64,34 +64,19 @@ def main() -> None:
 
     metrics_writer = MetricsWriter(
         run_dir / "metrics.csv",
-        fieldnames=[
-            "round",
-            "train_loss",
-            "test_loss",
-            "test_accuracy",
-            "epsilon_spent",
-            "upload_payload_bytes",
-            "pre_compression_payload_bytes",
-            "selected_clients",
-            "algorithm",
-            "dp_mode",
-            "compression_mode",
-            "noise_multiplier",
-            "clip_norm",
-            "schedule_reason",
-            "compression_ratio",
-            "nnz_params",
-            "avg_update_norm",
-            "avg_grad_norm",
-        ],
+        fieldnames=default_round_metric_fieldnames(),
     )
+    round_jsonl_writer = JsonlWriter(run_dir / "round_summary.jsonl")
+    client_jsonl_writer = JsonlWriter(run_dir / "client_metrics.jsonl")
 
     metrics_writer.write(
         {
             "round": 0,
+            "learning_rate": None,
             "train_loss": None,
             "test_loss": None,
             "test_accuracy": None,
+            "best_test_accuracy": None,
             "epsilon_spent": None,
             "upload_payload_bytes": None,
             "pre_compression_payload_bytes": None,
@@ -100,12 +85,26 @@ def main() -> None:
             "dp_mode": config["privacy"]["dp_mode"],
             "compression_mode": config["compression"]["mode"],
             "noise_multiplier": None,
+            "noise_multiplier_min": None,
+            "noise_multiplier_max": None,
+            "noise_multiplier_median": None,
             "clip_norm": None,
+            "clip_norm_min": None,
+            "clip_norm_max": None,
+            "clip_norm_median": None,
             "schedule_reason": None,
             "compression_ratio": None,
             "nnz_params": None,
             "avg_update_norm": None,
+            "median_update_norm": None,
+            "max_update_norm": None,
             "avg_grad_norm": None,
+            "median_grad_norm": None,
+            "max_grad_norm": None,
+            "median_client_loss": None,
+            "max_client_loss": None,
+            "median_client_epsilon": None,
+            "max_client_epsilon": None,
         }
     )
 
@@ -120,6 +119,8 @@ def main() -> None:
         config=config,
         logger=logger,
         metrics_writer=metrics_writer,
+        round_jsonl_writer=round_jsonl_writer,
+        client_jsonl_writer=client_jsonl_writer,
     )
     dump_json(
         run_dir / "summary.json",

@@ -9,7 +9,7 @@ import torch
 
 def aggregate_fedavg(
     client_states: list[OrderedDict[str, torch.Tensor]],
-    client_weights: list[int],
+    client_weights: list[float],
 ) -> OrderedDict[str, torch.Tensor]:
     """Compute a weighted average over client model parameters."""
     if not client_states:
@@ -30,7 +30,7 @@ def aggregate_fedavg(
 
 def aggregate_weighted_updates(
     client_updates: list[OrderedDict[str, torch.Tensor]],
-    client_weights: list[int],
+    client_weights: list[float],
 ) -> OrderedDict[str, torch.Tensor]:
     """Compute the weighted average over client update tensors."""
     if not client_updates:

@@ -1,0 +1,12 @@
+dataset:
+  name: mnist
+  root: data
+  partition_mode: dirichlet
+  num_clients: 10
+  dirichlet_alpha: 0.1
+  download: true
+  num_classes: 10
+  max_train_samples: null
+  max_test_samples: null
+model:
+  name: mnist_cnn

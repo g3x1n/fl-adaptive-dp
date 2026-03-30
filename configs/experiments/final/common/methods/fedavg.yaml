@@ -1,0 +1,11 @@
+training:
+  algorithm: fedavg
+  proximal_mu: 0.0
+privacy:
+  dp_mode: none
+  epsilon: null
+  noise_schedule: none
+compression:
+  mode: none
+  topk_ratio: 1.0
+  compress_updates: true

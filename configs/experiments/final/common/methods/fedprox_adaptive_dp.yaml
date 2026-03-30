@@ -1,0 +1,36 @@
+training:
+  algorithm: fedprox
+  proximal_mu: 0.5
+privacy:
+  dp_mode: adaptive
+  epsilon: null
+  target_epsilon: 650.0
+  delta: 1.0e-05
+  clip_norm: 1.0
+  noise_multiplier: 0.1
+  noise_schedule: performance_budget
+  min_noise_multiplier: 0.08
+  max_noise_multiplier: 0.18
+  schedule_metric: test_accuracy
+  schedule_warmup_rounds: 5
+  adaptive_step: 0.01
+  plateau_patience: 3
+  schedule_metric_tolerance: 0.002
+  schedule_drop_tolerance: 0.005
+  budget_tolerance_ratio: 0.05
+  client_aware_clipping: true
+  client_clipping_metric: update_norm
+  client_clipping_beta: 0.5
+  min_clip_norm: 0.6
+  max_clip_norm: 1.4
+  client_aware_noise: true
+  client_noise_beta: 0.2
+  reliability_aware_aggregation: true
+  aggregation_reliability_beta: 0.4
+  min_reliability_multiplier: 0.7
+  max_reliability_multiplier: 1.0
+  accountant: gaussian
+compression:
+  mode: none
+  topk_ratio: 1.0
+  compress_updates: true

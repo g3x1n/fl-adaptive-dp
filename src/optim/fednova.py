@@ -10,7 +10,7 @@ import torch
 def aggregate_fednova(
     global_state: OrderedDict[str, torch.Tensor],
     client_states: list[OrderedDict[str, torch.Tensor]],
-    client_weights: list[int],
+    client_weights: list[float],
     client_steps: list[int],
 ) -> OrderedDict[str, torch.Tensor]:
     """Aggregate client models using FedNova-style normalization.
@@ -42,7 +42,7 @@ def aggregate_fednova(
 def aggregate_fednova_updates(
     global_state: OrderedDict[str, torch.Tensor],
     client_updates: list[OrderedDict[str, torch.Tensor]],
-    client_weights: list[int],
+    client_weights: list[float],
     client_steps: list[int],
 ) -> OrderedDict[str, torch.Tensor]:
     """Aggregate compressed client updates using FedNova normalization."""

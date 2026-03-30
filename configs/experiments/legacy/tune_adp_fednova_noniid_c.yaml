@@ -1,0 +1,51 @@
+experiment:
+  name: tune_adp_fednova_noniid_c
+  seed: 42
+  output_root: outputs
+
+dataset:
+  name: mnist
+  root: data
+  partition_mode: dirichlet
+  num_clients: 10
+  dirichlet_alpha: 0.1
+  download: true
+  num_classes: 10
+  max_train_samples: 10000
+  max_test_samples: 2000
+
+model:
+  name: mnist_cnn
+
+training:
+  algorithm: fednova
+  rounds: 20
+  local_epochs: 1
+  batch_size: 64
+  eval_batch_size: 256
+  learning_rate: 0.05
+  fraction_fit: 1.0
+  proximal_mu: 0.0
+
+privacy:
+  dp_mode: adaptive
+  epsilon: null
+  target_epsilon: 5.0
+  delta: 1.0e-5
+  clip_norm: 1.0
+  noise_multiplier: 0.02
+  noise_schedule: round_based
+  min_noise_multiplier: 0.02
+  max_noise_multiplier: 0.2
+  schedule_metric: update_norm
+  schedule_warmup_rounds: 2
+  accountant: gaussian
+
+compression:
+  mode: none
+  topk_ratio: 1.0
+  compress_updates: true
+
+runtime:
+  device: auto
+  num_workers: 0

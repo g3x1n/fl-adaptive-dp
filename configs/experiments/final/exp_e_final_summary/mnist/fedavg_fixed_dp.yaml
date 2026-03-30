@@ -1,0 +1,9 @@
+inherits:
+- ../../common/runtime_ubuntu.yaml
+- ../../common/datasets/mnist_noniid_alpha_0_1.yaml
+- ../../common/training/mnist_strong.yaml
+- ../../common/methods/fedavg_fixed_dp.yaml
+experiment:
+  name: exp_e_final_summary_mnist_fedavg_fixed_dp
+  seed: 42
+  output_root: outputs/final/exp_e_final_summary

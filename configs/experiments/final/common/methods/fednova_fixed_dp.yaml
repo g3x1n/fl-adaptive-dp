@@ -1,0 +1,15 @@
+training:
+  algorithm: fednova
+  proximal_mu: 0.0
+privacy:
+  dp_mode: fixed
+  epsilon: 650.0
+  delta: 1.0e-05
+  clip_norm: 1.0
+  noise_multiplier: 0.12
+  noise_schedule: none
+  accountant: gaussian
+compression:
+  mode: none
+  topk_ratio: 1.0
+  compress_updates: true

@@ -1,0 +1,12 @@
+dataset:
+  name: cifar10
+  root: data
+  partition_mode: dirichlet
+  num_clients: 10
+  dirichlet_alpha: 0.5
+  download: true
+  num_classes: 10
+  max_train_samples: null
+  max_test_samples: null
+model:
+  name: cifar_cnn

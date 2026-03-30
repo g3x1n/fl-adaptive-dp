@@ -24,7 +24,11 @@ def apply_model_update(
 ) -> OrderedDict[str, torch.Tensor]:
     """Apply an aggregated client update to the global model state."""
     return OrderedDict(
-        (name, global_state[name].float() + update[name].float())
+        (
+            name,
+            global_state[name].float()
+            + update[name].to(device=global_state[name].device, dtype=global_state[name].dtype).float(),
+        )
         for name in global_state.keys()
     )
 

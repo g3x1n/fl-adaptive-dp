@@ -1,0 +1,9 @@
+inherits:
+- ../../common/runtime_ubuntu.yaml
+- ../../common/datasets/cifar10_noniid_alpha_0_1.yaml
+- ../../common/training/cifar10_strong.yaml
+- ../../common/methods/fedavg_adaptive_dp.yaml
+experiment:
+  name: exp_a_noniid_alpha_0_1_cifar10_fedavg_adaptive_dp
+  seed: 42
+  output_root: outputs/final/exp_a_noniid_alpha_0_1

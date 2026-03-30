@@ -1,0 +1,50 @@
+experiment:
+  name: fednova_mnist_full_fixed_dp_eval
+  seed: 42
+  output_root: outputs
+
+dataset:
+  name: mnist
+  root: data
+  partition_mode: dirichlet
+  num_clients: 10
+  dirichlet_alpha: 0.1
+  download: true
+  num_classes: 10
+  max_train_samples: null
+  max_test_samples: null
+
+model:
+  name: mnist_cnn
+
+training:
+  algorithm: fednova
+  rounds: 100
+  local_epochs: 2
+  batch_size: 64
+  eval_batch_size: 512
+  learning_rate: 0.05
+  lr_schedule: exp
+  lr_decay_gamma: 0.97
+  lr_decay_step: 1
+  min_learning_rate: 0.005
+  fraction_fit: 1.0
+  proximal_mu: 0.0
+
+privacy:
+  dp_mode: fixed
+  epsilon: 650.0
+  delta: 1.0e-5
+  clip_norm: 1.0
+  noise_multiplier: 0.12
+  noise_schedule: none
+  accountant: gaussian
+
+compression:
+  mode: none
+  topk_ratio: 1.0
+  compress_updates: true
+
+runtime:
+  device: auto
+  num_workers: 0

@@ -1,0 +1,9 @@
+inherits:
+- ../../common/runtime_ubuntu.yaml
+- ../../common/datasets/mnist_noniid_alpha_0_1.yaml
+- ../../common/training/mnist_strong.yaml
+- ../../common/methods/fedprox.yaml
+experiment:
+  name: exp_a_noniid_alpha_0_1_mnist_fedprox
+  seed: 42
+  output_root: outputs/final/exp_a_noniid_alpha_0_1

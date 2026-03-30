@@ -1,0 +1,8 @@
+runtime:
+  device: auto
+  num_workers: 8
+  pin_memory: auto
+  persistent_workers: auto
+  allow_tf32: true
+  cudnn_benchmark: true
+  matmul_precision: high
