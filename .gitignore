@@ -25,8 +25,8 @@ htmlcov/
 # macOS
 .DS_Store
 
-# # Local datasets and experiment artifacts
-data/
+# Local datasets and experiment artifacts
+/data/
 outputs/*
 # !outputs/logs/
 # !outputs/logs/.gitkeep
