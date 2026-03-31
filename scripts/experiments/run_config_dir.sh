@@ -20,4 +20,19 @@ fi
 while IFS= read -r config_path; do
   echo "==> Running ${config_path}"
   "$PYTHON_BIN" "$RUNNER" --config "$config_path" "$@"
-done < <(find "$CONFIG_DIR" -type f -name "*.yaml" | sort)
+done < <(
+  find "$CONFIG_DIR" -type f -name "*.yaml" \
+    | awk '
+      {
+        order = 2
+        if ($0 ~ /\/mnist\//) {
+          order = 0
+        } else if ($0 ~ /\/cifar10\//) {
+          order = 1
+        }
+        print order "\t" $0
+      }
+    ' \
+    | sort -k1,1n -k2,2 \
+    | cut -f2-
+)
