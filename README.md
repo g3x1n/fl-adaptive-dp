@@ -9,6 +9,23 @@
 - 保留足够细的实验日志，便于后续绘图和论文写作
 - 默认兼容远程 `Ubuntu + RTX4090`
 
+## 最近更新
+
+最近一轮主要补了两类改动：
+
+- `CIFAR-10 IID` 底座增强
+  - 本地优化器增加 `momentum / weight_decay / nesterov`
+  - `CIFAR-10` 训练增强加入 `RandomCrop + RandomHorizontalFlip`
+  - `CIFAR10CNN` 升级为带 `BatchNorm / Dropout` 的更强版本
+  - `FedProx` 默认 `proximal_mu` 调整为更合理的 `0.01`
+- 远程设备兼容修复
+  - 修复 `FedNova + Adaptive DP` 在 `CUDA` 环境下可能出现的 `cpu/cuda` 混用聚合错误
+  - 为 `FedProx` 的 proximal term 增加显式设备对齐保护
+
+相关记录见：
+
+- [CIFAR10-IID本地调优记录-20260331.md](/Users/gexinjin/project/fl-adaptive-dp/docs/CIFAR10-IID本地调优记录-20260331.md)
+
 ## 当前能力
 
 目前已经具备：
@@ -115,6 +132,14 @@ pip install -r requirements.txt
 
 - [Ubuntu-RTX4090运行说明.md](/Users/gexinjin/project/fl-adaptive-dp/docs/Ubuntu-RTX4090运行说明.md)
 
+如果远程机之前在 `FedNova + Adaptive DP` 上报过：
+
+```text
+Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu
+```
+
+请先同步到包含本次修复的最新提交后再重跑。
+
 ## 常用命令
 
 检查数据集划分：
@@ -198,3 +223,4 @@ pytest tests
 - [MIA安全性实验记录.md](/Users/gexinjin/project/fl-adaptive-dp/docs/MIA安全性实验记录.md)
 - [白盒梯度反演攻击实验记录.md](/Users/gexinjin/project/fl-adaptive-dp/docs/白盒梯度反演攻击实验记录.md)
 - [AdaptiveDP-NonIID三方法联合调参记录.md](/Users/gexinjin/project/fl-adaptive-dp/docs/AdaptiveDP-NonIID三方法联合调参记录.md)
+- [CIFAR10-IID本地调优记录-20260331.md](/Users/gexinjin/project/fl-adaptive-dp/docs/CIFAR10-IID本地调优记录-20260331.md)

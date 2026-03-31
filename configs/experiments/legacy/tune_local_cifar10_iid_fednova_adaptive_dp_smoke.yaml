@@ -1,0 +1,18 @@
+inherits:
+- ../final/common/datasets/cifar10_iid.yaml
+- ../final/common/training/cifar10_strong.yaml
+- ../final/common/methods/fednova_adaptive_dp.yaml
+experiment:
+  name: tune_local_cifar10_iid_fednova_adaptive_dp_smoke
+  seed: 42
+  output_root: outputs/tuning_local
+dataset:
+  max_train_samples: 1000
+  max_test_samples: 500
+training:
+  rounds: 1
+runtime:
+  device: cpu
+  num_workers: 0
+  pin_memory: false
+  persistent_workers: false

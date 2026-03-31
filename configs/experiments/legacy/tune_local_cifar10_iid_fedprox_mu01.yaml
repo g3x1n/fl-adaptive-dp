@@ -1,0 +1,19 @@
+inherits:
+- ../final/common/datasets/cifar10_iid.yaml
+- ../final/common/training/cifar10_strong.yaml
+- ../final/common/methods/fedprox.yaml
+experiment:
+  name: tune_local_cifar10_iid_fedprox_mu01
+  seed: 42
+  output_root: outputs/tuning_local
+dataset:
+  max_train_samples: 4000
+  max_test_samples: 1000
+training:
+  rounds: 8
+  proximal_mu: 0.01
+runtime:
+  device: cpu
+  num_workers: 0
+  pin_memory: false
+  persistent_workers: false

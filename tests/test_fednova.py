@@ -6,7 +6,7 @@ from collections import OrderedDict
 
 import torch
 
-from src.optim import aggregate_fednova
+from src.optim import aggregate_fednova, aggregate_fednova_updates
 
 
 def test_fednova_matches_fedavg_when_client_steps_match() -> None:
@@ -40,3 +40,21 @@ def test_fednova_respects_step_normalization() -> None:
     # The second client took more local steps, so FedNova normalizes its update
     # before composing the final global step.
     assert torch.allclose(aggregated["weight"], torch.tensor([6.6666665]))
+
+
+def test_fednova_update_aggregation_matches_normalized_direction() -> None:
+    global_state = OrderedDict({"weight": torch.tensor([10.0])})
+    client_updates = [
+        OrderedDict({"weight": torch.tensor([2.0])}),
+        OrderedDict({"weight": torch.tensor([4.0])}),
+    ]
+
+    aggregated = aggregate_fednova_updates(
+        global_state=global_state,
+        client_updates=client_updates,
+        client_weights=[1, 1],
+        client_steps=[1, 3],
+    )
+
+    # tau_eff = 2.0, normalized_direction = (2/1 + 4/3) / 2 = 5/3.
+    assert torch.allclose(aggregated["weight"], torch.tensor([3.3333333]))

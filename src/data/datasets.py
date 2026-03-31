@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader, Dataset, Subset
 from torchvision import datasets, transforms
 
 
-def _mnist_transform():
+def _mnist_transform(train: bool):
     return transforms.Compose(
         [
             transforms.ToTensor(),
@@ -18,22 +18,31 @@ def _mnist_transform():
     )
 
 
-def _cifar10_transform():
-    return transforms.Compose(
+def _cifar10_transform(train: bool):
+    transform_steps = []
+    if train:
+        transform_steps.extend(
+            [
+                transforms.RandomCrop(32, padding=4),
+                transforms.RandomHorizontalFlip(),
+            ]
+        )
+    transform_steps.extend(
         [
             transforms.ToTensor(),
             transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2470, 0.2435, 0.2616)),
         ]
     )
+    return transforms.Compose(transform_steps)
 
 
 def load_dataset(dataset_name: str, root: str, train: bool, download: bool) -> Dataset:
     """Load one of the supported torchvision datasets."""
     name = dataset_name.lower()
     if name == "mnist":
-        return datasets.MNIST(root=root, train=train, download=download, transform=_mnist_transform())
+        return datasets.MNIST(root=root, train=train, download=download, transform=_mnist_transform(train=train))
     if name == "cifar10":
-        return datasets.CIFAR10(root=root, train=train, download=download, transform=_cifar10_transform())
+        return datasets.CIFAR10(root=root, train=train, download=download, transform=_cifar10_transform(train=train))
     raise ValueError(f"Unsupported dataset: {dataset_name}")
 
 

@@ -4,6 +4,9 @@ training:
   batch_size: 64
   eval_batch_size: 512
   learning_rate: 0.05
+  optimizer_momentum: 0.0
+  weight_decay: 0.0
+  nesterov: false
   lr_schedule: exp
   lr_decay_gamma: 0.97
   lr_decay_step: 1

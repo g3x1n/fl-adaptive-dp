@@ -205,6 +205,11 @@ class SynchronousFLServer:
                     learning_rate=learning_rate,
                     algorithm=algorithm,
                     proximal_mu=proximal_mu,
+                    optimizer_config={
+                        "momentum": self.config["training"].get("optimizer_momentum", 0.0),
+                        "weight_decay": self.config["training"].get("weight_decay", 0.0),
+                        "nesterov": self.config["training"].get("nesterov", False),
+                    },
                     privacy_plan=client_privacy_plan,
                     compression_config={
                         **self.config["compression"],

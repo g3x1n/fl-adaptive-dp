@@ -3,10 +3,13 @@ training:
   local_epochs: 1
   batch_size: 64
   eval_batch_size: 512
-  learning_rate: 0.02
+  learning_rate: 0.05
+  optimizer_momentum: 0.9
+  weight_decay: 0.0005
+  nesterov: true
   lr_schedule: exp
-  lr_decay_gamma: 0.98
+  lr_decay_gamma: 0.985
   lr_decay_step: 1
-  min_learning_rate: 0.001
+  min_learning_rate: 0.002
   fraction_fit: 1.0
   proximal_mu: 0.0

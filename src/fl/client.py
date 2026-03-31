@@ -34,6 +34,7 @@ class LocalClient:
         learning_rate: float,
         algorithm: str,
         proximal_mu: float = 0.0,
+        optimizer_config: dict | None = None,
         privacy_plan: dict | None = None,
         compression_config: dict | None = None,
     ) -> dict:
@@ -41,7 +42,14 @@ class LocalClient:
         local_model = deepcopy(global_model).to(self.device)
         reference_global_model = deepcopy(global_model).to(self.device)
         reference_global_model.eval()
-        optimizer = torch.optim.SGD(local_model.parameters(), lr=learning_rate)
+        optimizer_config = optimizer_config or {}
+        optimizer = torch.optim.SGD(
+            local_model.parameters(),
+            lr=learning_rate,
+            momentum=float(optimizer_config.get("momentum", 0.0)),
+            weight_decay=float(optimizer_config.get("weight_decay", 0.0)),
+            nesterov=bool(optimizer_config.get("nesterov", False)),
+        )
         criterion = nn.CrossEntropyLoss()
         privacy_plan = privacy_plan or {}
         compression_config = compression_config or {}
