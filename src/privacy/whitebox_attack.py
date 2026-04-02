@@ -46,6 +46,7 @@ def collect_observed_gradients(
             model=working_model,
             clip_norm=clip_norm,
             noise_multiplier=noise_multiplier,
+            effective_batch_size=inputs.size(0),
         )
         torch.random.set_rng_state(cpu_state)
 

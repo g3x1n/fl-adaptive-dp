@@ -62,6 +62,7 @@ def train_one_epoch(
                 model=model,
                 clip_norm=clip_norm,
                 noise_multiplier=noise_multiplier,
+                effective_batch_size=inputs.size(0),
             )
 
         optimizer.step()

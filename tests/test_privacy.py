@@ -31,6 +31,38 @@ def test_clip_and_add_noise_bounds_the_gradient_norm() -> None:
     assert stats["post_clip_grad_norm"] <= 0.50001
 
 
+def test_clip_and_add_noise_scales_noise_with_batch_average() -> None:
+    torch.manual_seed(0)
+    model_small = MNISTCNN()
+    inputs = torch.randn(4, 1, 28, 28)
+    targets = torch.tensor([0, 1, 2, 3])
+    criterion = torch.nn.CrossEntropyLoss()
+    loss = criterion(model_small(inputs), targets)
+    loss.backward()
+    original_small = [parameter.grad.detach().clone() for parameter in model_small.parameters() if parameter.grad is not None]
+
+    torch.manual_seed(1)
+    clip_and_add_noise(model_small, clip_norm=1.0, noise_multiplier=0.4, effective_batch_size=4)
+    noisy_small = [parameter.grad.detach().clone() for parameter in model_small.parameters() if parameter.grad is not None]
+
+    torch.manual_seed(0)
+    model_large = MNISTCNN()
+    inputs = torch.randn(4, 1, 28, 28)
+    targets = torch.tensor([0, 1, 2, 3])
+    loss = criterion(model_large(inputs), targets)
+    loss.backward()
+    original_large = [parameter.grad.detach().clone() for parameter in model_large.parameters() if parameter.grad is not None]
+
+    torch.manual_seed(1)
+    clip_and_add_noise(model_large, clip_norm=1.0, noise_multiplier=0.4, effective_batch_size=16)
+    noisy_large = [parameter.grad.detach().clone() for parameter in model_large.parameters() if parameter.grad is not None]
+
+    small_noise_energy = sum(torch.sum((after - before) ** 2) for before, after in zip(original_small, noisy_small))
+    large_noise_energy = sum(torch.sum((after - before) ** 2) for before, after in zip(original_large, noisy_large))
+
+    assert large_noise_energy < small_noise_energy
+
+
 def test_privacy_accountant_is_monotonic() -> None:
     accountant = PrivacyAccountant()
     epsilon_a = accountant.step(sample_rate=0.1, noise_multiplier=1.0, delta=1e-5, num_steps=10)

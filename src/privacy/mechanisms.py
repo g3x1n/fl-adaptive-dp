@@ -23,6 +23,7 @@ def clip_and_add_noise(
     model: nn.Module,
     clip_norm: float,
     noise_multiplier: float,
+    effective_batch_size: int = 1,
 ) -> dict[str, float]:
     """Clip gradients and optionally inject Gaussian noise.
 
@@ -34,10 +35,15 @@ def clip_and_add_noise(
     post_clip_grad_norm = compute_global_grad_norm(model)
 
     if noise_multiplier > 0:
+        # Cross-entropy in this project uses mean reduction, so parameter
+        # gradients are already averaged over the minibatch. To keep the DP
+        # perturbation on the same scale, inject noise into the averaged
+        # gradient rather than the implicit per-example summed gradient.
+        noise_std = (noise_multiplier * clip_norm) / max(int(effective_batch_size), 1)
         for parameter in model.parameters():
             if parameter.grad is None:
                 continue
-            noise = torch.randn_like(parameter.grad) * (noise_multiplier * clip_norm)
+            noise = torch.randn_like(parameter.grad) * noise_std
             parameter.grad.add_(noise)
 
     return {
